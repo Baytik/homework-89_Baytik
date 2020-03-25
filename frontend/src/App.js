@@ -4,6 +4,7 @@ import {Route, Switch} from "react-router-dom";
 import Header from "./Components/Header/Header";
 import Register from "./Components/Register/Register";
 import Login from "./Components/Login/Login";
+import Artists from "./Components/Artists/Artists";
 
 class App extends Component {
   render() {
@@ -11,6 +12,7 @@ class App extends Component {
         <div className="App">
           <Header/>
           <Switch>
+              <Route path="/" exact component={Artists}/>
             <Route path="/register" component={Register}/>
             <Route path="/login" component={Login}/>
           </Switch>

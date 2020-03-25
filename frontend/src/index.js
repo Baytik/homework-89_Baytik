@@ -8,6 +8,7 @@ import {Provider} from "react-redux";
 import userLogReducer from "./store/reducers/userLogReducer/userLogReducer";
 import {createBrowserHistory} from "history";
 import {connectRouter, routerMiddleware, ConnectedRouter} from "connected-react-router";
+import artistsReducer from "./store/reducers/artistsReducer/artistsReducer";
 
 const saveToLocalStorage = state => {
     try {
@@ -35,7 +36,8 @@ const history = createBrowserHistory();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
     router: connectRouter(history),
-    user: userLogReducer
+    user: userLogReducer,
+    artists: artistsReducer
 });
 
 const middleware = [

@@ -1,0 +1,26 @@
+.Artists {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.artist-block {
+    margin: 10px 20px;
+}
+.artist-block div {
+    background: #ccc;
+    text-align: center;
+}
+.artist-block img {
+    width: 300px;
+    height: 300px;
+}
+.artist {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+.artist-block a:hover {
+    text-decoration: underline;
+}
