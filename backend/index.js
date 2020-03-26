@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const users = require('./app/users');
 const artists = require('./app/artists');
+const albums = require('./app/albums');
 const config = require('./config');
 
 const app = express();
@@ -17,6 +18,7 @@ const run = async () => {
     await mongoose.connect(config.database, config.databaseOptions);
     app.use('/users', users);
     app.use('/artists', artists);
+    app.use('/albums', albums);
     app.listen(port)
 };
 
