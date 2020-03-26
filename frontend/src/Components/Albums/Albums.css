@@ -1,0 +1,32 @@
+.albums {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.albums-block {
+    margin: 10px 20px;
+}
+.albums-block div {
+    background: #ccc;
+    padding-left: 90px;
+    padding-bottom: 1px;
+    padding-top: 5px;
+}
+.albums-block img {
+    width: 300px;
+    height: 300px;
+}
+.albums-block p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+.albums-block a {
+    font-size: 24px;
+    color: black;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+.albums-block a:hover {
+    text-decoration: underline;
+}

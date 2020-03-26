@@ -1,0 +1,15 @@
+.trackHistory {
+    display: flex;
+    margin-top: 20px;
+}
+.history-block {
+    border: 2px solid black;
+    margin: 0 20px;
+    padding: 5px;
+    text-align: center;
+}
+.history-block h5 {
+    font-size: 16px;
+    color: darkgreen;
+    font-weight: normal;
+}

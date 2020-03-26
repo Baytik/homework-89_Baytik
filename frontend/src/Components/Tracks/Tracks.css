@@ -1,0 +1,49 @@
+.tracks {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.track-block {
+    margin-top: 30px;
+    padding: 10px;
+    background: orange;
+    width: 230px;
+    text-align: center;
+}
+.track-block strong {
+    font-size: 20px;
+}
+.track-block h2 {
+    text-transform: capitalize;
+}
+.track-block p {
+    color: darkblue;
+}
+.login-block input{
+    margin: 10px 0;
+    font-size: 20px;
+    padding: 5px;
+}
+button {
+    font-size: 20px;
+    background: white;
+    border: 2px solid black;
+    cursor: pointer;
+    padding: 3px 7px;
+}
+.register {
+    color: #ccc;
+    margin-left: 10px;
+    text-decoration: none;
+}
+.register:hover {
+    text-decoration: underline;
+}
+.error {
+    color: brown;
+    font-weight: bold;
+    font-size: 18px;
+}
+.btn {
+    margin-top: 20px;
+}
