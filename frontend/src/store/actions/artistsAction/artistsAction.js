@@ -17,10 +17,15 @@ export const publishArtistError = (error) => ({type: PUBLISH_ARTIST_ERROR, error
 
 export const fetchArtists = () => {
     return async (dispatch, getState) => {
-        const token = getState().user.user;
         try {
-            const response =  await axiosAPI.get('/artists', {headers: {'Authorization': token.token}});
-            dispatch(fetchArtistsSuccess(response.data));
+            const token = getState().user.user;
+            if(!token) {
+                const response =  await axiosAPI.get('/artists');
+                dispatch(fetchArtistsSuccess(response.data));
+            } else {
+                const response =  await axiosAPI.get('/artists', {headers: {'Authorization': token.token}});
+                dispatch(fetchArtistsSuccess(response.data));
+            }
         } catch (error) {
             dispatch(fetchArtistsError(error))
         }

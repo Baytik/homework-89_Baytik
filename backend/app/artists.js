@@ -23,14 +23,18 @@ const upload = multer({storage});
 
 router.get('/', async (req, res) => {
     const authorization = req.get('Authorization');
-    const user = await User.findOne({token: authorization});
-    if (user === null || user.role !== 'admin') {
-    const artists = await Artist.find({published: true});
-    res.send(artists);
+    if(!authorization) {
+        const albums = await Artist.find({published: true});
+        return res.send(albums)
     }
-    if (user.role === 'admin') {
-        const artists = await Artist.find();
-        res.send(artists)
+
+    const user = await User.findOne({token: authorization});
+    if(user.role !== 'admin') {
+        const albums = await Artist.find({published: true});
+        return res.send(albums)
+    } else if (user.role === 'admin') {
+        const albums = await Artist.find();
+        return res.send(albums)
     }
 });
 

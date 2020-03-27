@@ -16,10 +16,15 @@ export const publishAlbumError = (error) => ({type: PUBLISH_ALBUM_ERROR, error})
 
 export const fetchAlbums = (id) => {
     return async (dispatch, getState) => {
-        const token = getState().user.user;
         try {
-            const response =  await axiosAPI.get(`/albums?artist=${id}`, {headers: {'Authorization': token.token}});
-            dispatch(fetchAlbumsSuccess(response.data));
+            const token = getState().user.user;
+            if (!token) {
+                const response =  await axiosAPI.get(`/albums?artist=${id}`);
+                dispatch(fetchAlbumsSuccess(response.data));
+            } else {
+                const response =  await axiosAPI.get(`/albums?artist=${id}`, {headers: {'Authorization': token.token}});
+                dispatch(fetchAlbumsSuccess(response.data));
+            }
         } catch (e) {
             dispatch(errorMessage(e))
         }
