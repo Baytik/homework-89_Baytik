@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import './Albums.css';
 import {apiURL} from "../../apiURL";
 import {NavLink} from "react-router-dom";
-import {deleteAlbum, fetchAlbums, postAlbum} from "../../store/actions/albumsAction/albumsAction";
+import {deleteAlbum, fetchAlbums, postAlbum, publishAlbum} from "../../store/actions/albumsAction/albumsAction";
 
 class Albums extends Component {
 
@@ -34,6 +34,10 @@ class Albums extends Component {
         await this.props.deleteAlbum(id)
     };
 
+    publicAlbumHandler = async (id) => {
+        await this.props.publishAlbum(id)
+    };
+
     render() {
         return (
             <>
@@ -47,7 +51,12 @@ class Albums extends Component {
                             <p>{album.year}</p>
                         </div>
                         {this.props.user ? this.props.user.role === 'admin' && (
+                            <>
                             <button className="btn" onClick={() => this.deleteAlbumHandler(album._id)}>Delete</button>
+                                {album.published === false && (
+                                    <button className="btn" onClick={() => this.publicAlbumHandler(album._id)}>Public</button>
+                                )}
+                            </>
                         ) : (
                             <p/>
                         )}
@@ -56,7 +65,7 @@ class Albums extends Component {
             </div>
                 {this.props.user && (
                     <div className="new-artist">
-                        <h2>Добавление новых исполнителей</h2>
+                        <h2>Добавление новых Альбомов</h2>
                         <div>
                             <input type="text" name="title" placeholder="Введите Исполнителя" onChange={this.changeInputHandler}/>
                         </div>
@@ -84,7 +93,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     fetchAlbums: (id) => dispatch(fetchAlbums(id)),
     postAlbum: (album) => dispatch(postAlbum(album)),
-    deleteAlbum: (id) => dispatch(deleteAlbum(id))
+    deleteAlbum: (id) => dispatch(deleteAlbum(id)),
+    publishAlbum: (id) => dispatch(publishAlbum(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Albums);

@@ -1,10 +1,33 @@
 import React, {Component} from 'react';
 import './Tracks.css';
 import {connect} from "react-redux";
-import {deleteTrack, fetchTrack, postHistory} from "../../store/actions/tracksAction/tracksAction";
+import {
+    createTrack,
+    deleteTrack,
+    fetchTrack,
+    postHistory,
+    publishTrack
+} from "../../store/actions/tracksAction/tracksAction";
 import {Redirect} from "react-router-dom";
 
 class Tracks extends Component {
+
+    state = {
+      title: '',
+      duration: '',
+      counter: ''
+    };
+
+    postNewTrack = async () => {
+        const Track = {
+          title: this.state.title,
+          duration: this.state.duration,
+          counter: this.state.counter,
+          album: this.props.match.params.id
+        };
+        await this.props.createTrack(Track);
+        this.props.fetchTrack(this.props.match.params.id)
+    };
 
     componentDidMount() {
         const id = this.props.match.params.id;
@@ -19,6 +42,12 @@ class Tracks extends Component {
         await this.props.deleteTrack(id)
     };
 
+    publicTrackHandler = async (id) => {
+        await this.props.publishTrack(id)
+    };
+
+    changeInputHandler = e => {this.setState({[e.target.name]: e.target.value})};
+
     render() {
         if (!this.props.user) return <Redirect to="/login"/>;
         return (
@@ -32,12 +61,34 @@ class Tracks extends Component {
                             <button className="btn" onClick={() => this.listenTrackClicker(track._id)}>listen</button>
                         )}
                         {this.props.user ? this.props.user.role === 'admin' && (
+                            <>
                             <button className="btn" onClick={() => this.deleteTrackHandler(track._id)}>Delete</button>
+                                {track.published === false && (
+                                    <button className="btn" onClick={() => this.publicTrackHandler(track._id)}>Public</button>
+                                )}
+                            </>
                         ) : (
                             <p/>
                         )}
                     </div>
                 ))}
+                {this.props.user && (
+                    <div className="new-artist">
+                        <h2>Добавление новых треков</h2>
+                        <div>
+                            <input type="text" name="title" placeholder="Введите Исполнителя" onChange={this.changeInputHandler}/>
+                        </div>
+                        <div>
+                            <input type="number" name="duration" placeholder="Длина трека" onChange={this.changeInputHandler}/>
+                        </div>
+                        <div>
+                            <input type="number" name="counter" placeholder="Номер трека" onChange={this.changeInputHandler}/>
+                        </div>
+                        <div>
+                            <button onClick={this.postNewTrack}>Save</button>
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
@@ -51,7 +102,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     fetchTrack: (id) => dispatch(fetchTrack(id)),
     postHistory: (track) => dispatch(postHistory(track)),
-    deleteTrack: (id) => dispatch(deleteTrack(id))
+    deleteTrack: (id) => dispatch(deleteTrack(id)),
+    publishTrack: (id) => dispatch(publishTrack(id)),
+    createTrack: (track, id) => dispatch(createTrack(track, id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tracks);

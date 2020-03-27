@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import './Artists.css';
-import {deleteArtist, fetchArtists} from "../../store/actions/artistsAction/artistsAction";
+import {deleteArtist, fetchArtists, publishArtist} from "../../store/actions/artistsAction/artistsAction";
 import {apiURL} from "../../apiURL";
 import {NavLink} from "react-router-dom";
 
@@ -13,6 +13,10 @@ class Artists extends Component {
 
     deleteArtistHandler = async (id) => {
        await this.props.deleteArtist(id)
+    };
+
+    publicArtistHandler = async (id) => {
+      await this.props.publishArtist(id)
     };
 
     render() {
@@ -29,7 +33,12 @@ class Artists extends Component {
                             <NavLink to={`/albums/${artist._id}`} className="artist">{artist.artist}</NavLink>
                         </div>
                         {this.props.user ? this.props.user.role === 'admin' && (
-                            <button className="btn" onClick={() => this.deleteArtistHandler(artist._id)}>Delete</button>
+                            <>
+                                <button className="btn" onClick={() => this.deleteArtistHandler(artist._id)}>Delete</button>
+                                {artist.published === false && (
+                                    <button className="btn" onClick={() => this.publicArtistHandler(artist._id)}>Public</button>
+                                )}
+                            </>
                         ) : (
                             <p/>
                         )}
@@ -48,7 +57,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     fetchArtists: () => dispatch(fetchArtists()),
-    deleteArtist: (id) => dispatch(deleteArtist(id))
+    deleteArtist: (id) => dispatch(deleteArtist(id)),
+    publishArtist: (id) => dispatch(publishArtist(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Artists);

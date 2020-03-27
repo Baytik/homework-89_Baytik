@@ -6,12 +6,14 @@ export const ERROR_MESSAGE = 'ERROR_MESSAGE';
 
 export const POST_ARTIST_ERROR = 'POST_ARTIST_ERROR';
 export const DELETE_ARTIST_ERROR = 'DELETE_ARTIST_ERROR';
+export const PUBLISH_ARTIST_ERROR = 'PUBLISH_ARTIST_ERROR';
 
 export const fetchArtistsSuccess = (artists) => ({type: FETCH_ARTISTS_SUCCESS, artists});
 export const fetchArtistsError = (error) => ({type: ERROR_MESSAGE, error});
 
 export const postArtistError = (error) => ({type: POST_ARTIST_ERROR, error});
 export const deleteArtistError = (error) => ({type: DELETE_ARTIST_ERROR, error});
+export const publishArtistError = (error) => ({type: PUBLISH_ARTIST_ERROR, error});
 
 export const fetchArtists = () => {
     return async (dispatch, getState) => {
@@ -48,4 +50,16 @@ export const deleteArtist = (id) => {
             dispatch(fetchArtists());
         }
     }
+};
+
+export const publishArtist = (id) => {
+  return async (dispatch,  getState) => {
+      const token = getState().user.user;
+      try {
+          await axiosAPI.post(`artists/${id}/published`, id, {headers: {'Authorization': token.token}});
+          alert('Please rendering');
+      } catch (error) {
+          dispatch(publishArtistError(error));
+      }
+  }
 };
