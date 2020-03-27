@@ -13,7 +13,12 @@ const TrackSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    album: String
+    album: String,
+    published: {
+        type: Boolean,
+        enum: [true, false],
+        default: false
+    }
 });
 
 const Track = mongoose.model('Track', TrackSchema);

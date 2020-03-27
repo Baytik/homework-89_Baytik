@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './Tracks.css';
 import {connect} from "react-redux";
-import {fetchTrack, postHistory} from "../../store/actions/tracksAction/tracksAction";
+import {deleteTrack, fetchTrack, postHistory} from "../../store/actions/tracksAction/tracksAction";
 import {Redirect} from "react-router-dom";
 
 class Tracks extends Component {
@@ -15,6 +15,10 @@ class Tracks extends Component {
         this.props.postHistory({trackId: id});
     };
 
+    deleteTrackHandler = async (id) => {
+        await this.props.deleteTrack(id)
+    };
+
     render() {
         if (!this.props.user) return <Redirect to="/login"/>;
         return (
@@ -26,6 +30,11 @@ class Tracks extends Component {
                         <p>{track.duration}</p>
                         {this.props.user && (
                             <button className="btn" onClick={() => this.listenTrackClicker(track._id)}>listen</button>
+                        )}
+                        {this.props.user ? this.props.user.role === 'admin' && (
+                            <button className="btn" onClick={() => this.deleteTrackHandler(track._id)}>Delete</button>
+                        ) : (
+                            <p/>
                         )}
                     </div>
                 ))}
@@ -41,7 +50,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     fetchTrack: (id) => dispatch(fetchTrack(id)),
-    postHistory: (track) => dispatch(postHistory(track))
+    postHistory: (track) => dispatch(postHistory(track)),
+    deleteTrack: (id) => dispatch(deleteTrack(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tracks);

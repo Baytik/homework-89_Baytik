@@ -8,6 +8,7 @@ import Artists from "./Components/Artists/Artists";
 import Albums from "./Components/Albums/Albums";
 import Tracks from "./Components/Tracks/Tracks";
 import trackHistory from "./Components/trackHistory/trackHistory";
+import newArtist from "./Components/newArtist/newArtist";
 
 class App extends Component {
   render() {
@@ -21,6 +22,7 @@ class App extends Component {
               <Route path="/albums/:id" component={Albums}/>
               <Route path="/track/:id" component={Tracks}/>
               <Route path="/track_history" component={trackHistory}/>
+              <Route path="/add_new_singer" component={newArtist}/>
           </Switch>
         </div>
     )

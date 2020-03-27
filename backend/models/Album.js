@@ -16,6 +16,11 @@ const AlbumSchema = new mongoose.Schema({
         ref: 'Artist',
         required: true
     },
+    published: {
+        type: Boolean,
+        enum: [true, false],
+        default: false
+    }
 });
 
 const Album = mongoose.model('Album', AlbumSchema);

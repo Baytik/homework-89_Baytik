@@ -5,6 +5,9 @@ const nanoid = require('nanoid');
 const multer = require('multer');
 const router = express.Router();
 const Album = require('../models/Album');
+const auth = require('../middleware/auth');
+const permit = require('../middleware/permit');
+const User = require('../models/User');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -18,9 +21,18 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 router.get('/', async (req, res) => {
+    const authorization = req.get('Authorization');
+    const user = await User.findOne({token: authorization});
+
     if (req.query.artist) {
         const albums = await Album.find({artist: req.query.artist}).populate('artist');
-        res.send(albums)
+        if (!user || user.role !== 'admin') {
+            const filterAlbum = albums.filter(album => album.published === true);
+            res.send(filterAlbum)
+        }
+        if (user.role === 'admin') {
+            res.send(albums)
+        }
     } else {
         const albums = await Album.find();
         res.send(albums)
@@ -35,12 +47,13 @@ router.get('/:id', async (req, res) => {
     res.send(album)
 });
 
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/', [auth, upload.single('image')], async (req, res) => {
     if (req.file) {
         req.body.image = req.file.filename;
     }
-
+    const user = req.user;
     const object = {
+        user: user._id,
         title: req.body.title,
         year: req.body.year,
         image: req.body.image,
@@ -54,6 +67,18 @@ router.post('/', upload.single('image'), async (req, res) => {
     } catch (e) {
         res.status(400).send(e);
     }
+});
+
+router.delete('/:id', [auth, permit('admin')], async (req, res) => {
+    const user = req.user;
+
+        const album = await Album.deleteOne({_id: req.params.id});
+        try {
+            await album.save();
+            return res.send({message: 'Was deleted'});
+        } catch (e) {
+            return res.status(400).send(e);
+        }
 });
 
 module.exports = router;
