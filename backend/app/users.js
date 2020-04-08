@@ -4,14 +4,33 @@ const bcrypt = require("bcrypt");
 const axios = require('axios');
 const nanoid = require('nanoid');
 const config = require('../config');
+const multer = require('multer');
+const path = require('path');
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, config.uploadPath);
+    },
+    filename: (req, file, cb) => {
+        cb(null, nanoid() + path.extname(file.originalname))
+    }
+});
+
+const upload = multer({storage});
+
+router.post('/', upload.single('avatar'), async (req, res) => {
+    if (req.file) {
+        req.body.avatar = req.file.filename;
+    }
     const object = {
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        firstName: req.body.firstName,
+        avatar: req.body.avatar
     };
+    console.log(object)
     const user = new User(object);
     try {
         user.generateToken();
@@ -24,7 +43,7 @@ router.post('/', async (req, res) => {
 
 router.post('/sessions', async (req, res) => {
     const user = await User.findOne({username: req.body.username});
-
+    console.log(user)
     if (!user) {
         return res.status(400).send({error: 'Username or password not correct!'})
     }
@@ -66,15 +85,19 @@ router.post('/facebook', async (req, res) => {
         }
         let user = await User.findOne({facebookId: req.body.id});
         if (!user) {
+            const [firstName, lastName] = req.body.name.split(' ');
             user = new User({
                 username: req.body.id,
                 password: nanoid(),
                 facebookId: req.body.id,
+                firstName,
+                lastName
             });
+        }
             user.generateToken();
             await user.save();
             return res.send(user);
-        }
+
     } catch (e) {
         return res.sendStatus(401);
     }

@@ -7,17 +7,21 @@ class Register extends Component {
 
     state = {
         username: '',
-        password: ''
+        password: '',
+        firstName: '',
+        avatar: null
     };
 
     changeInputHandler = e => {this.setState({[e.target.name]: e.target.value})};
+    fileChangeHandler = e => {this.setState({[e.target.name]: e.target.files[0]})};
 
     newUser = async () => {
-            const User = {
-                username: this.state.username,
-                password: this.state.password
-            };
-            await this.props.postRegister(User);
+        const User = new FormData();
+        User.append('username', this.state.username);
+        User.append('password', this.state.password);
+        User.append('avatar', this.state.avatar);
+        User.append('firstName', this.state.firstName);
+        await this.props.postRegister(User);
     };
 
     render() {
@@ -29,6 +33,12 @@ class Register extends Component {
                 </div>
                 <div>
                     <input type="text" placeholder="Write password" name="password" onChange={this.changeInputHandler}/>
+                </div>
+                <div>
+                    <input type="text" placeholder="Write display name" name="firstName" onChange={this.changeInputHandler}/>
+                </div>
+                <div>
+                    <input type="file" name="avatar" onChange={this.fileChangeHandler}/>
                 </div>
                 <div>
                     <button onClick={this.newUser}>Register</button>

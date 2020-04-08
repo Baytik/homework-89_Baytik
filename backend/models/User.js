@@ -27,7 +27,9 @@ const UserSchema = new Schema({
         enum: ['user', 'admin']
     },
     facebookId: String,
-    displayName: String
+    firstName: String,
+    lastName: String,
+    avatar: String
 });
 
 UserSchema.methods.generateToken = function() {

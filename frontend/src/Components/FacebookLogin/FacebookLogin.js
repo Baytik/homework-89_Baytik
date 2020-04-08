@@ -11,7 +11,6 @@ const FacebookLogin = () => {
     const callback = (facebookData) => {
         if (facebookData.id) {
             dispatch(loginWithFacebook(facebookData));
-            console.log(facebookData)
         }
     };
 

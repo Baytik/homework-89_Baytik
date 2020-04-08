@@ -3,6 +3,8 @@ import './Header.css';
 import {NavLink} from "react-router-dom";
 import {connect} from "react-redux";
 import {logoutUser} from "../../store/actions/userLogAction/userLogAction";
+import {apiURL} from "../../apiURL";
+import userIcon from './user-icon.jpeg';
 
 class Header extends Component {
 
@@ -20,7 +22,12 @@ class Header extends Component {
                     <ul>
                         {this.props.user ? (
                             <>
-                                <span>Hello, {this.props.user.username}!</span>
+                                <span>Hello, {this.props.user.firstName || this.props.user.lastName}!</span>
+                                {this.props.user.avatar ? (
+                                    <img src={apiURL + '/uploads/' + this.props.user.avatar} alt="" className="avatar"/>
+                                ) : (
+                                    <img src={userIcon} alt="" className="avatar"/>
+                                )}
                                 <li>
                                     <NavLink to="/track_history">Track History</NavLink>
                                 </li>

@@ -8,7 +8,7 @@ class Login extends Component {
 
     state = {
         username: '',
-        password: ''
+        password: '',
     };
 
     changeInputHandler = e => {this.setState({[e.target.name]: e.target.value})};
