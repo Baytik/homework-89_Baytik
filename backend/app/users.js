@@ -30,7 +30,6 @@ router.post('/', upload.single('avatar'), async (req, res) => {
         firstName: req.body.firstName,
         avatar: req.body.avatar
     };
-    console.log(object)
     const user = new User(object);
     try {
         user.generateToken();
@@ -43,7 +42,6 @@ router.post('/', upload.single('avatar'), async (req, res) => {
 
 router.post('/sessions', async (req, res) => {
     const user = await User.findOne({username: req.body.username});
-    console.log(user)
     if (!user) {
         return res.status(400).send({error: 'Username or password not correct!'})
     }

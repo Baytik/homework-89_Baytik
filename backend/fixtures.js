@@ -17,12 +17,14 @@ const run = async () => {
     await User.create({
         username: 'user',
         password: '123',
-        token: '123sadhffhds'
+        token: '123sadhffhds',
+        firstName: 'Jack'
     }, {
         username: 'admin',
         password: '12345',
         token: 'sadn324nsds',
-        role: 'admin'
+        role: 'admin',
+        firstName: 'John'
     });
 
     const [cent, rihanna] = await Artist.create({
