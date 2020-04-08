@@ -46,9 +46,8 @@ router.post('/', async (req, res) => {
 router.delete('/:id', [auth, permit('admin')], async (req, res) => {
     const user = req.user;
 
-    const track = await Track.deleteOne({_id: req.params.id});
+     await Track.deleteOne({_id: req.params.id});
     try {
-        await track.save();
         return res.send({message: 'Was deleted'});
     } catch (e) {
         return res.status(400).send(e);

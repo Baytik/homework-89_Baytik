@@ -63,9 +63,8 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
 router.delete('/:id', [auth, permit('admin')], async (req, res) => {
     const user = req.user;
 
-    const artist = await Artist.deleteOne({_id: req.params.id});
+    await Artist.deleteOne({_id: req.params.id});
     try {
-        await artist.save();
         return res.send({message: 'Was deleted'});
     } catch (e) {
         return res.status(400).send(e);

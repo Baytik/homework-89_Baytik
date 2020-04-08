@@ -9,5 +9,9 @@ module.exports = {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true
+    },
+    facebook: {
+        appId: '3109373302426478',
+        appSecret: '3a7b147c259531d784f0f642cf70d702'
     }
 };

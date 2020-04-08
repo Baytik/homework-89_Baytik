@@ -1,0 +1,29 @@
+import React from 'react';
+import FacebookLoginButton from 'react-facebook-login/dist/facebook-login-render-props';
+import './FacebookLogin.css';
+import icon from './facebook.png';
+import {useDispatch} from "react-redux";
+import {loginWithFacebook} from "../../store/actions/userLogAction/userLogAction";
+
+const FacebookLogin = () => {
+    const dispatch = useDispatch();
+
+    const callback = (facebookData) => {
+        if (facebookData.id) {
+            dispatch(loginWithFacebook(facebookData));
+            console.log(facebookData)
+        }
+    };
+
+    return (
+        <FacebookLoginButton
+            appId="3109373302426478"
+            callback={callback}
+            render={renderProps => (
+                <button onClick={renderProps.onClick} className="facebook"><img src={icon} alt=""/></button>
+            )}
+        />
+    );
+};
+
+export default FacebookLogin;

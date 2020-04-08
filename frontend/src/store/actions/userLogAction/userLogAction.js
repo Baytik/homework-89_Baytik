@@ -48,3 +48,16 @@ export const logoutUser = () => {
         }
     }
 };
+
+export const loginWithFacebook = facebookData => {
+  return async (dispatch) => {
+      try {
+          const response = await axiosAPI.post('/users/facebook', facebookData);
+          console.log(response.data);
+          dispatch(loginUserSuccess(response.data));
+          dispatch(push('/'));
+      } catch (e) {
+
+      }
+      }
+};

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './Login.css';
 import {loginUser} from "../../store/actions/userLogAction/userLogAction";
 import {connect} from "react-redux";
+import FacebookLogin from "../FacebookLogin/FacebookLogin";
 
 class Login extends Component {
 
@@ -38,6 +39,7 @@ class Login extends Component {
                         <h5 className="error">{this.props.loginError.error}</h5>
                     )}
                 </div>
+                <FacebookLogin/>
             </div>
         );
     }
