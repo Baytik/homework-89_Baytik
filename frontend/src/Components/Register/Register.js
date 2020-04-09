@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './Register.css';
 import {postRegister} from "../../store/actions/userLogAction/userLogAction";
 import {connect} from "react-redux";
+import FacebookLogin from "../FacebookLogin/FacebookLogin";
 
 class Register extends Component {
 
@@ -38,11 +39,13 @@ class Register extends Component {
                     <input type="text" placeholder="Write display name" name="firstName" onChange={this.changeInputHandler}/>
                 </div>
                 <div>
-                    <input type="file" name="avatar" onChange={this.fileChangeHandler}/>
+                    <input type="file" name="avatar" onChange={this.fileChangeHandler} style={{width: '115px'}}/>
+                    <span>Avatar</span>
                 </div>
                 <div>
                     <button onClick={this.newUser}>Register</button>
                 </div>
+                <FacebookLogin/>
             </div>
         );
     }
